@@ -39,7 +39,8 @@ const checkUserStatus = (req, res, next) => {
 };
 
 app.use((req, res, next) => {
-  if (req.path === "/register" || req.path === "/login") {
+  const publicRoutes = ["/register", "/login", "/favicon.ico"];
+  if (publicRoutes.includes(req.path)) {
     return next();
   }
   checkUserStatus(req, res, next);
