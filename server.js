@@ -38,12 +38,17 @@ const checkUserStatus = (req, res, next) => {
   });
 };
 
+const routesRequiringStatusCheck = [
+  "/users",
+  "/users/block",
+  "/users/unblock",
+  "/users/delete",
+];
 app.use((req, res, next) => {
-  const publicRoutes = ["/register", "/login", "/favicon.ico"];
-  if (publicRoutes.includes(req.path)) {
-    return next();
+  if (routesRequiringStatusCheck.includes(req.path)) {
+    return checkUserStatus(req, res, next);
   }
-  checkUserStatus(req, res, next);
+  next();
 });
 
 app.post("/register", async (req, res) => {
